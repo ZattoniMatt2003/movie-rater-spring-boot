@@ -1,5 +1,7 @@
-package it.intesys.movierater.app;
+package it.intesys.movierater.app.controller;
 
+import it.intesys.movierater.app.dto.Movie;
+import it.intesys.movierater.app.service.MovieService;
 import org.javatuples.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
