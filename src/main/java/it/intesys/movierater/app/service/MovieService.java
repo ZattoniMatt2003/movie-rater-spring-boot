@@ -1,5 +1,6 @@
 package it.intesys.movierater.app.service;
 
+import java.util.ArrayList;
 import java.util.Random;
 import it.intesys.movierater.app.mapper.MovieMapper;
 import it.intesys.movierater.app.dto.Movie;
@@ -11,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,5 +54,14 @@ public class MovieService {
 
     public Integer getVoteById(Integer movieId){
         return movieRepository.getMovieById(movieId).getVote();
+    }
+
+    public Long getVotesCount(){
+        List<MovieEntity> movies = movieRepository.readMovies();
+        Integer result = 0;
+        for (MovieEntity movie: movies) {
+            result += movie.getVote();
+        }
+        return (long)result;
     }
 }

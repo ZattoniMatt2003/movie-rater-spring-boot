@@ -76,9 +76,6 @@ public class AppStartup {
         return attoriAnniLavoro;
     }
 
-    /**
-     *
-     */
     public List<String> getOldestActors(HashMap<String,Integer> attoriAnniLavoro){
         List<String> attoriSelezionati = new ArrayList<>();
         Integer anniSelezionato = 0;
