@@ -13,7 +13,12 @@ public class MovieMapper {
         Movie movie = new Movie();
         movie.setId(movieEntity.getId().longValue());
         movie.setTitle(movieEntity.getTitle());
+        movie.setYear(movieEntity.getYear());
+        movie.setGenre(movieEntity.getGenre());
         movie.setDirector(movieEntity.getDirector());
+        movie.setActors(movieEntity.getActors());
+        movie.setCountry(movieEntity.getCountry());
+        movie.setVote(movieEntity.getVote());
         return movie;
     }
 
@@ -21,7 +26,12 @@ public class MovieMapper {
         MovieEntity movieEntity= new MovieEntity();
         movieEntity.setId(movie.getId().intValue());
         movieEntity.setTitle(movie.getTitle());
+        movieEntity.setYear(movie.getYear());
+        movieEntity.setGenre(movie.getGenre());
         movieEntity.setDirector(movie.getDirector());
+        movieEntity.setActors(movie.getActors());
+        movieEntity.setCountry(movie.getCountry());
+        movieEntity.setVote(movie.getVote());
         return movieEntity;
     }
 

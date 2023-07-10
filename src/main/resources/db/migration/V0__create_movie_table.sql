@@ -6,5 +6,6 @@ CREATE TABLE movie
     Genre    VARCHAR(100) NOT NULL,
     Director VARCHAR(100) NOT NULL,
     Actors   VARCHAR(250) NOT NULL,
-    Country  VARCHAR(100) NOT NULL
+    Country  VARCHAR(100) NOT NULL,
+    Vote     INTEGER(255) NOT NULL
 );

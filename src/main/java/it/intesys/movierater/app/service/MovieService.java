@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class MovieService {
 
     private final Logger logger = LoggerFactory.getLogger(MovieService.class);
@@ -43,6 +45,14 @@ public class MovieService {
     }
 
     public void vote(Long movieId) {
-        logger.info("Add vote for movie {}", movieId);
+        MovieEntity movie = movieRepository.getMovieById((movieId).intValue());
+        Integer voto = getVoteById((movieId).intValue())+1;
+        movie.setVote(voto);
+        movieRepository.updateMovieVote(movie);
+        logger.info(String.valueOf(voto));
+    }
+
+    public Integer getVoteById(Integer movieId){
+        return movieRepository.getMovieById(movieId).getVote();
     }
 }

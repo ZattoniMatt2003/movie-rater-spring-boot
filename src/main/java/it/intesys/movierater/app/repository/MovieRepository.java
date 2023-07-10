@@ -28,9 +28,11 @@ public class MovieRepository{
     }
 
     public MovieEntity getMovieById(Integer movieId){
-        return em.createQuery("from MovieEntity where id=(:movieId)",MovieEntity.class)
-                .setParameter("movieId",movieId)
-                .getSingleResult();
+        return em.find(MovieEntity.class,movieId);
 
+    }
+
+    public void updateMovieVote(MovieEntity movie){
+        em.merge(movie);
     }
 }
