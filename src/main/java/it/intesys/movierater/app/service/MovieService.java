@@ -1,6 +1,5 @@
 package it.intesys.movierater.app.service;
 
-import java.util.ArrayList;
 import java.util.Random;
 import it.intesys.movierater.app.mapper.MovieMapper;
 import it.intesys.movierater.app.dto.Movie;
@@ -34,6 +33,10 @@ public class MovieService {
         return Pair.with(
                 movieMapper.toDTO(movieRepository.getMovieById(random.nextInt(movieCount))),
                 movieMapper.toDTO(movieRepository.getMovieById(random.nextInt(movieCount))));
+    }
+
+    public Movie getMovieById(Integer movieId){
+        return movieMapper.toDTO(movieRepository.getMovieById(movieId));
     }
 
     public Long getMovieCount() {

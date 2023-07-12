@@ -41,7 +41,9 @@ public class MovieController {
     }
 
     @GetMapping("/movie/{movieId}")
-    public String getMovieDetails(@PathVariable("movieId") Long movieId) {
+    public String getMovieDetails(@PathVariable("movieId") Long movieId, Model model) {
+        model.addAttribute("movie",movieService.getMovieById((movieId).intValue()));
+        model.addAttribute("actors",movieService.get2RandomMovies());
         return "movie";
     }
 }

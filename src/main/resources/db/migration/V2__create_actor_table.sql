@@ -1,0 +1,6 @@
+CREATE TABLE actor
+(
+    ID      INTEGER      NOT NULL PRIMARY KEY auto_increment,
+    NAME    VARCHAR(255) NOT NULL,
+    SURNAME VARCHAR(255) NOT NULL
+)
