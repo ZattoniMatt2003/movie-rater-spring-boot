@@ -1,5 +1,6 @@
 package it.intesys.movierater.app.controller;
 
+import it.intesys.movierater.app.dto.Actor;
 import it.intesys.movierater.app.dto.Movie;
 import it.intesys.movierater.app.service.ActorService;
 import it.intesys.movierater.app.service.MovieActorService;
@@ -8,6 +9,8 @@ import org.javatuples.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class MovieController {
@@ -51,7 +54,8 @@ public class MovieController {
     @GetMapping("/movie/{movieId}")
     public String getMovieDetails(@PathVariable("movieId") Long movieId, Model model) {
         model.addAttribute("movie",movieService.getMovieById((movieId).intValue()));
-        model.addAttribute("actors",actorService.getActorsByIds(movieActorService.getActorsForMovie((movieId).intValue())));
+        List<Actor> actors = actorService.getActorsByIds(movieActorService.getActorsForMovie((movieId).intValue()));
+        model.addAttribute("actors",actors);
         return "movie";
     }
 }

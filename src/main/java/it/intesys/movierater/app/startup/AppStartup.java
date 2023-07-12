@@ -1,6 +1,9 @@
 package it.intesys.movierater.app.startup;
 
+import it.intesys.movierater.app.dto.Actor;
 import it.intesys.movierater.app.dto.Movie;
+import it.intesys.movierater.app.service.ActorService;
+import it.intesys.movierater.app.service.MovieActorService;
 import it.intesys.movierater.app.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,68 +23,44 @@ public class AppStartup {
 
     private final MovieService movieService;
 
-    public AppStartup(MovieService movieService) {
+    private final ActorService actorService;
+
+    private final MovieActorService movieActorService;
+
+    public AppStartup(MovieService movieService, ActorService actorService, MovieActorService movieActorService) {
         this.movieService = movieService;
+        this.actorService = actorService;
+        this.movieActorService = movieActorService;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void calculateActorsWithLongestCareer() {
-        List<Movie> movies = movieService.getAllMovies();
-        HashMap<String, List<Integer>> attoriAnniFilm = getAttoriAnniFilm(movies);
-        HashMap<String,Integer> attoriAnniLavoro = getAttoriAnniLavoro(attoriAnniFilm);
-        List<String> attori = getOldestActors(attoriAnniLavoro);
-        for(String attore: attori){
-            log.info(attore +"->"+attoriAnniLavoro.get(attore));
-        }
-
-    }
-
-    /**
-     * Prende gli attori e gli anni dei film a cui hanno lavorato
-     * @param movies
-     * @return
-     */
-    public HashMap<String, List<Integer>> getAttoriAnniFilm(List<Movie> movies){
-        HashMap<String, List<Integer>> attoriAnniFilm = new HashMap<>();
-        for (Movie movie: movies) {
-            String[] attoriMovie = movie.getActors().split(", ");
-            for (String attore: attoriMovie) {
-                if(attoriAnniFilm.containsKey(attore)){
-                    List<Integer> anni = attoriAnniFilm.get(attore);
-                    anni.add(movie.getYear());
-                    attoriAnniFilm.replace(attore,anni);
-                }else{
-                    List<Integer> anni = new ArrayList<>();
-                    anni.add(movie.getYear());
-                    attoriAnniFilm.put(attore,anni);
-                }
+        List<Actor> actors = actorService.getAllActors();
+        HashMap<Actor,Integer> attoriAnniLavoro = new HashMap<>();
+        for (Actor actor:actors){
+            List<Integer> anniLavoro = new ArrayList<>();
+            List<Integer> ids = movieActorService.getMoviesForActor(actor.getId());
+            List<Movie> movies = movieService.getMovieByIds(ids);
+            for(Movie movie:movies){
+                anniLavoro.add(movie.getYear());
             }
-        }
-        return attoriAnniFilm;
-    }
-
-    /**
-     * Prende gli attori e calcola gli anni di servizio
-     * @param attoriAnniFilm
-     * @return
-     */
-    public HashMap<String,Integer> getAttoriAnniLavoro(HashMap<String, List<Integer>> attoriAnniFilm){
-        HashMap<String,Integer> attoriAnniLavoro = new HashMap<>();
-        for (String attore: attoriAnniFilm.keySet()) {
-            List<Integer> anniLavoro = attoriAnniFilm.get(attore);
             Collections.sort(anniLavoro);
             Integer anni = anniLavoro.get((int)anniLavoro.stream().count()-1) - anniLavoro.get(0);
-            attoriAnniLavoro.put(attore,anni);
+            //log.info(String.valueOf(anni));
+            attoriAnniLavoro.put(actor,anni);
         }
-        return attoriAnniLavoro;
+        List<Actor> attori = getOldestActors(attoriAnniLavoro);
+        for(Actor attore: attori){
+            log.info(attore.getName()+" "+attore.getSurname() +"->"+attoriAnniLavoro.get(attore));
+        }
     }
 
-    public List<String> getOldestActors(HashMap<String,Integer> attoriAnniLavoro){
-        List<String> attoriSelezionati = new ArrayList<>();
+    public List<Actor> getOldestActors(HashMap<Actor,Integer> attoriAnniLavoro){
+        List<Actor> attoriSelezionati = new ArrayList<>();
         Integer anniSelezionato = 0;
-        String attoreSelezionato = "";
+        Actor attoreSelezionato = new Actor();
         for(int i= 0;i<3;i++) {
-            for (String attore : attoriAnniLavoro.keySet()) {
+            for (Actor attore : attoriAnniLavoro.keySet()) {
                 if (!attoriSelezionati.contains(attore) && attoriAnniLavoro.get(attore) > anniSelezionato) {
                     anniSelezionato = attoriAnniLavoro.get(attore);
                     attoreSelezionato = attore;

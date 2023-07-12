@@ -1,6 +1,10 @@
 package it.intesys.movierater.app.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+
+import it.intesys.movierater.app.dto.Actor;
 import it.intesys.movierater.app.mapper.MovieMapper;
 import it.intesys.movierater.app.dto.Movie;
 import it.intesys.movierater.app.entity.MovieEntity;
@@ -21,10 +25,12 @@ public class MovieService {
     private final MovieRepository movieRepository;
 
     private final MovieMapper movieMapper;
+    private final MovieActorService movieActorService;
 
-    public MovieService(MovieRepository movieRepository, MovieMapper movieMapper) {
+    public MovieService(MovieRepository movieRepository, MovieMapper movieMapper, MovieActorService movieActorService) {
         this.movieRepository = movieRepository;
         this.movieMapper = movieMapper;
+        this.movieActorService = movieActorService;
     }
 
     public Pair<Movie, Movie> get2RandomMovies() {
@@ -55,7 +61,7 @@ public class MovieService {
         Integer voto = getVoteById((movieId).intValue())+1;
         movie.setVote(voto);
         movieRepository.updateMovieVote(movie);
-        logger.info(String.valueOf(voto));
+        //logger.info(String.valueOf(voto));
     }
 
     public Integer getVoteById(Integer movieId){
@@ -70,4 +76,20 @@ public class MovieService {
         }
         return (long)result;
     }
+
+    public HashMap<Integer, Integer> getActorsVotes(List<Actor> actors){
+        HashMap<Integer, Integer> attoriVoti = new HashMap<>();
+        for(Actor actor: actors){
+            List<Movie> movies = getMovieByIds(movieActorService.getMoviesForActor(actor.getId()));
+            Integer votes = 0;
+            for (Movie movie: movies){
+                votes+=movie.getVote();
+            }
+            attoriVoti.put(actor.getId(),votes);
+        }
+        return attoriVoti;
+    }
+
+
+
 }
