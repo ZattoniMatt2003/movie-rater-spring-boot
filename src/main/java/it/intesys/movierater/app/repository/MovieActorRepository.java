@@ -14,15 +14,15 @@ public class MovieActorRepository {
         this.em = em;
     }
 
-    public List<MovieActorEntity> getActors(Integer actorId){
-        return em.createQuery("FROM MovieActorEntity where actor.id = :actorId", MovieActorEntity.class)
-                .setParameter("actorId",actorId)
+    public List<MovieActorEntity> getActors(Integer movieId){
+        return em.createQuery("FROM MovieActorEntity where movie.id = :movieId", MovieActorEntity.class)
+                .setParameter("movieId",movieId)
                 .getResultList();
     }
 
-    public List<MovieActorEntity> getMovies(Integer movieId){
-        return em.createQuery("FROM MovieActorEntity where movie.id = :movieId", MovieActorEntity.class)
-                .setParameter("movieId",movieId)
+    public List<MovieActorEntity> getMovies(Integer actorId){
+        return em.createQuery("FROM MovieActorEntity where actor.id = :actorId", MovieActorEntity.class)
+                .setParameter("actorId",actorId)
                 .getResultList();
     }
 

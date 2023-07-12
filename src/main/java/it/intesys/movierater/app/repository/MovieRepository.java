@@ -32,6 +32,13 @@ public class MovieRepository{
 
     }
 
+    public List<MovieEntity> getMovieByIds(List<Integer> movieIds){
+        List<MovieEntity> movie = em.createQuery("from MovieEntity where id in (:movies)", MovieEntity.class)
+                .setParameter("movies",movieIds)
+                .getResultList();
+        return movie;
+    }
+
     public void updateMovieVote(MovieEntity movie){
         em.merge(movie);
     }

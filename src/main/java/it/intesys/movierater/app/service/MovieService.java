@@ -38,6 +38,9 @@ public class MovieService {
     public Movie getMovieById(Integer movieId){
         return movieMapper.toDTO(movieRepository.getMovieById(movieId));
     }
+    public List<Movie> getMovieByIds(List<Integer> movieId){
+        return movieMapper.toDTOList(movieRepository.getMovieByIds(movieId));
+    }
 
     public Long getMovieCount() {
         return getAllMovies().stream().count();

@@ -20,12 +20,12 @@
     <div class="col s8">
                 <div class="card">
                     <div class="card-content">
-                        <span class="card-title">{{title}}</span>
-                        <h6>{{director}}</h6>
+                        <span class="card-title">{{surname}}</span>
+                        <h6>{{name}}</h6>
                     </div>
 
                 <div class="card-action">
-                    <form name="movie" action="/movie/{{id}}" method="get">
+                    <form name="movie" action="/actor/{{id}}" method="get">
                         <input type="hidden" name="id" value="{{id}}">
                         <button class="btn waves-effect waves-light" type="submit" name="action">Visualizza
                         </button>

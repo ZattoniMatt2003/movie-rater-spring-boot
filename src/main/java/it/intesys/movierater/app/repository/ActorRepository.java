@@ -20,6 +20,12 @@ public class ActorRepository {
                 .getSingleResult();
     }
 
+    public List<ActorEntity> getActorsByIds(List<Integer> actorsId){
+        return em.createQuery("FROM ActorEntity WHERE id in (:actorsId)",ActorEntity.class)
+                .setParameter("actorsId",actorsId)
+                .getResultList();
+    }
+
     public ActorEntity getActorByNameAndSurname(String name, String surname){
         return em.createQuery("FROM ActorEntity WHERE name=:name and surname=:surname",ActorEntity.class)
                 .setParameter("name",name)

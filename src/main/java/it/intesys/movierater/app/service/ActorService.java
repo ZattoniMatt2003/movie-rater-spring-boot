@@ -25,6 +25,10 @@ public class ActorService {
         return actorMapper.toDTO(actorRepository.getActorById(actorId));
     }
 
+    public List<Actor> getActorsByIds(List<Integer> ids){
+        return actorMapper.toDTOList(actorRepository.getActorsByIds(ids));
+    }
+
     public Actor getActorByNameAndSurname(String name, String surname){
         return actorMapper.toDTO(actorRepository.getActorByNameAndSurname(name,surname));
     }
